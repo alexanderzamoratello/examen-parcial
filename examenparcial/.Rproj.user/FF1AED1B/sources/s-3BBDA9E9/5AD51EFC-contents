@@ -1,0 +1,60 @@
+#parte 1 del examen practico
+library(tidyverse)
+#ejercicio 1
+variable <- function(h, x = 85.4){
+  if(h>=1000 & h<3000){
+    p = x - 2*(h%/%500)
+  } else if(h>=3000 & h<4000){
+    p = x - 0.5*(h%/%500)
+  } else if(h>=4000){
+    p = x
+  } else{
+    print("valor no considerado")
+  }
+  
+  return(p)
+}
+variable(1000)
+#ejercicio 2
+
+A <- rbind(c(2, 1, 3), 
+           c(5, -4, 1), 
+           c(1, -1, -4))
+B <- c(7, -19, 4)
+solve(A, B)
+
+#parte 2 del examen practico
+data <- as_tibble(read.csv("mods_clima_uh.csv"))
+#A
+data %>% 
+  group_by(uh_name) %>% 
+  summarise(bh_pc = mean(bh_pc, na.rm = T))
+#B
+data1 <- data[data$bh_esc=="ACCESS 1.0"|data$bh_esc=="HadGEM2-ES"|data$bh_esc=="MPI-ESM-LR",]
+data1 %>% 
+  group_by(bh_month) %>% 
+  summarise(bh_pc = (mean(bh_pc))*100/sd(bh_pc))
+#C
+##el escenario climatico  es que en los meses de enero - febrero-marzo -octubre-noviembre y diciembre hay fuertes lluvias. y los otros meses la precipitacion en menor; siendo el mes que menos llueve julio
+
+#parte 3
+
+data2 <- as_tibble(read.csv("temperatureDataset.csv"))
+data2[data2==-99.9] <- NA
+
+data3 <- data2 %>% 
+  dplyr::mutate(DATE = as.Date(DATE, format = "%d/%m/%Y")) %>% 
+  dplyr::select(DATE, qc00000805)
+
+ seq(as.Date.character("1983-09-01"), as.Date("1984-08-31"), by = "day") %>%
+   length()
+ seq(as.Date.character("1997-09-01"), as.Date("1998-08-31"), by = "day") %>%
+   length()
+
+ 
+ 
+ 
+
+
+
+

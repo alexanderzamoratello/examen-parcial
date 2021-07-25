@@ -1,0 +1,371 @@
+---
+title: "tarea progra"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Ejercicios
+*ALUMNO:ALEXANDER RENATO ZAMORA TELLO*
+
+*CODIGO :17160048*
+
+## Parte 1
+Cargar las variables almacenadas en el siguiente archivo [Rdata](https://goo.gl/uDzU8v)
+```{r}
+load("datosprogra.RData")
+```
+**1. Calcula los valores numéricos aproximados de **
+
+a) $\frac{0.3 \cdot 0.15}{0.3 \cdot 0.15 + 0.2 \cdot 0.8 + 0.5 \cdot 0.12}$
+```{r}
+a <- (0.3*0.15)/((0.3*0.15) + (0.2*0.8) + (0.5*0.12))
+round(a, 2)
+```
+b) $\frac{5^6}{6!} e^{-5}$
+```{r}
+b <- ((5^6)*(2.718281^-5))/(1*2*3*4*5*6)
+round(b,2)
+```
+
+c) $\begin{pmatrix} 20 \\ 7 \end{pmatrix} 0.4^7  0.6^{13}$
+```{r}
+x <- matrix(c(20,7), nrow = 2 , ncol = 1)
+c <- x*(0.4^7)*(0.6^13)
+round(c,4)
+```
+**2. Realizar la siguiente suma**
+
+a) $1+2+3+...+1000$
+```{r}
+a <- 1:100
+sum(a)
+round(a,2)
+```
+b) $1+2+4+8+16+...+1024$
+```{r}
+b <- (1:1024) [1:1024 %% 2 ==0];
+sum((1:1024) [1:1024 %% 2 ==0])
+round(b,2)
+```
+**3. El vector  `grupo` representa el grupo al que pertenece una serie de alumnos**
+
+a) ¿Cuántos elementos tiene?
+```{r}
+length(grupo)
+```
+b) ¿En qué posiciones  vector está la letra "A"?
+```{r}
+grupo[2]
+
+```
+**4. El vector `nota` representa la nota de un examen de los alumnos que están en los grupos del vector `grupo`.**
+
+a) ¿Cuanto suman todas las notas?
+```{r}
+sum(nota)
+```
+b) ¿Cual es la media aritmética de todas las notas?
+```{r}
+length(nota)
+(sum(nota))/192
+```
+c) ¿En qué posi9iones están las notas mayores de *7.0*?
+```{r}
+which(nota > 7.0)
+```
+d) Visualiza las notas ordenadas de mayor a menor
+```{r}
+sort(decreasing = T, nota)
+```
+e) ¿En qué posición está la nota máxima?
+```{r}
+which.max(nota)
+
+```
+
+**5. A partir de los vectores `grupo` y `nota` definidos.**
+
+a) Suma las notas de los 10 primeros alumnos del vector
+```{r}
+sum(nota[1:10])
+```
+b) ¿Cuántos alumnos hay del grupo *C*?
+```{r}
+library(dplyr)
+Alum_notas <- dplyr::tibble(grupo1 = grupo, nota1 = nota)
+Alum_notas %>%
+  dplyr::select(grupo1) %>%
+  dplyr::filter(grupo1 == "C") %>%
+  dplyr::summarise(length(grupo1))
+```
+c) ¿Cuántos alumnos han aprobado?
+```{r}
+```
+d) ¿Cuántos alumnos del grupo *B* han aprobado?
+```{r}
+```
+e) ¿Qué porcentaje de alumnos del grupo *C* han aprobado?
+```{r}
+```
+f) ¿De qué grupos son la máxima y mínima notas de toda la muestra?
+```{r}
+```
+g) Nota media de los alumnos de grupo *A* y *B*, juntos, considerando sólo a los que han aprobado.
+```{r}
+```
+
+**6. Calcula el percentil 66 de las notas de todos los alumnos, y también de los alumnos del grupo C.**
+
+**7. Un alumno tiene una nota de 4.9. ¿Qué porcentaje, del total de alumnos, tiene una nota menor o igual que la suya? ¿Y qué porcentaje tiene una nota mayor o igual que la suya?**
+
+**8. Realiza el gráfico de diagramas de caja de las notas de cada grupo, para poder comparar el nivel de cada uno de ellos.**
+
+**9. Si la variable `conc` recoge la concentración de plomo (en ppm) en el aire de cierta zona durante un día completo**
+
+a) ¿Cuál ha sido la concentración máxima?
+b) ¿En cuántos de los muestreos se ha superado la concentración de 40.0 ppm?
+c) ¿Cuál ha sido la concentración media del día?
+d) ¿Cuáles fueron las 10 mediciones más bajas del día?
+e) Si la primera medida fue a las 00:00. ¿A qué hora del día se alcanzó la concentración máxima?
+
+## Parte 2
+
+**1. 1.Graficar los puntos $(1,1),(2,4),(3,6),(4,8),(5,25),(6,36),(7,49),(8,61),(9,81),(10,100)$ en un plano utilizando RStudio.**
+```{r}
+x<-1:10
+y<-x^2
+plot(x,y)
+
+```
+
+**2. Ingresar la matriz A en RStudio**
+$A = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \\ 4 & 8 & 12  \end{pmatrix}$
+```{r}
+a1 <- seq(1,3)
+a2 <- seq(2,6,2)
+a3 <- seq(3,9,3)
+a4 <- seq(4,12,4)
+matrix_A<- rbind(a1,a2,a3,a4)
+matrix_A
+```
+**3. Ingresar la matriz identidad de tamaño 3**
+$I = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1  \end{pmatrix}$
+```{r}
+I <- diag(3)
+I
+```
+**4. Crea una función que cree una matriz nula ingresando las dimensiones**
+```{r}
+matrix_nula <- function(r,c){
+  return(diag(,r,c));
+}
+matrix_nula(8,8)
+```
+**5. Modificar la matriz `diag(4)`, para que se parezca a la matriz B**
+$B = \begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & 2 & 0 & 0 \\ 0 & 0 & 3 & 0 \\ 0 & 0 & 0 & 4  \end{pmatrix}$
+```{r}
+matrix_B <- diag(4)
+matrix_B[1,1] <- 0
+matrix_B[2,2] <- 2
+matrix_B[3,3] <- 3
+matrix_B[4,4] <- 4
+matrix_B
+```
+
+**6. Obtener la matriz transpuesta de A (ejercicio 2)**
+```{r}
+trans_A <- t(matrix_A)
+trans_A
+```
+
+**7. Realizar las siguientes operaciones $A + B$, $A - B$, $3B$ y $AB$**
+
+#a. Suma
+dim(matrix_A)
+dim(matrix_B)
+matrix_A + matrix_B #Error: "Dos matrices tienen que tener un nÃºmero igual de 
+#filas y columnas para poder sumarlas."
+
+
+#b. Resta
+matrix_A - matrix_B #Error: "Dos matrices tienen que tener un nÃºmero igual de 
+#filas y columnas para poder sumarlas."
+
+```{r}
+#c. 3B
+3*matrix_B
+```
+#d. A*B
+
+matrix_A %*% matrix_B 
+#Error: Solo puede multiplicar dos matrices si el nÃºmero de 
+#columnas en la primera matriz es igual al nÃºmero de renglones en la segunda matriz.
+
+**8. Crea una función para calcular $P^6$**
+$P = \begin{pmatrix} 1 & 2 & 3 \\ -2 & 4 & -2 \\ 1 & 0 & 1  \end{pmatrix}$
+```{r}
+P <- rbind(c(1,2,3),c(-2,4,-2),c(1,0,1))
+
+potencia_M <-function(M,n){
+  Mi=M
+  for(i in 2:n){
+    Mi=Mi%*%M};
+print(Mi)}
+
+potencia_M(P,6)
+
+```
+
+**9. Resolver el sistema de ecuaciones**
+$3x - y + z  = -1\\9x - 2y + z = -9\\3x + y - 2z = -9$
+```{r}
+matrix_sist <- matrix(c(3,-1,1,9,-2,1,3,1,-2), nrow = 3, byrow= T)
+matrix_sol <- c(-1,-9,-9)
+solve(matrix_sist,matrix_sol)
+```
+
+**10. Utilizando la ayuda de R, investigue para qué sirven las funciones `eigen()` y `det()`**
+```{r}
+```
+
+**11. Considerando las matrices**
+
+$$
+
+B= \begin{pmatrix} 
+1 & 2 & 3 & 4 & 5 \\
+2 & 4 & 6 & 8 & 10 \\
+3 & 6 & 9 & 12 & 15 \\
+4 & 8 & 12 & 16 & 20 \\
+5 & 10 & 15 & 20 & 25 \\
+6 & 12 & 18 & 24 & 30 \\
+7 & 14 & 21 & 28 & 35 \\
+8 & 16 & 24 & 32 & 40 \\
+9 & 18 & 27 & 36 & 45 \\
+10 & 20 & 30 & 40 & 50
+\end{pmatrix}
+
+A = \begin{pmatrix}
+  0 & 1 & 0 & 1 & 0 \\
+  1 & 0 & 1 & 0 & 1 \\
+  0 & 1 & 0 & 1 & 0 \\
+  0 & 1 & 0 & 0 & 1 \\
+  1 & 0 & 1 & 1 & 0 \\
+\end{pmatrix}
+
+$$
+
+Calcular $A \cdot B - A B^t$
+```{r}
+b1 <- seq(1,10)
+b2 <- seq(2,20,2)
+b3 <- seq(3,30,3)
+b4 <- seq(4,40,4)
+b5 <- seq(5,50,5)
+B <- cbind(b1,b2,b3,b4,b5)
+
+A <- matrix(c(0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,1,0,0,1,1,0,1,1,0), nrow = 5, byrow = T)
+
+#A %*% B # No se puede porque no tienen las mismas dimensiones 
+t_B <- t(B)       
+A %*% t_B #Resultado final !
+```
+
+**12. Considere**
+$\hat\beta = (X^t \cdot X)^{-1} \cdot X^t \cdot Y$
+
+Determine la matriz $\hat\beta$
+
+$$
+
+x=\begin{pmatrix}1 & 1\\ 1 & -1\\ 1 & 0\\ 1 & 1\\ 1 & 2\\ \end{pmatrix}
+
+y = \begin{pmatrix}0\\0\\1\\1\\3\\\end{pmatrix}
+
+$$
+```{r}
+X <- matrix(c(1,1,1,-1,1,0,1,1,1,2), ncol = 2, byrow = T)
+Y <- matrix(c(0,0,1,1,3))
+X_t <- t(X)
+
+beta <- (solve(X_t %*% X) %*% X_t) %*% Y
+beta
+```
+
+**13. Corre el siguiente código para cargar los vectores `year` y `co2`** en memoria
+```{r eval=FALSE}
+data(co2)
+means = aggregate(co2, FUN=mean)
+year = as.vector(time(means))
+co2 = as.vector(means)
+```
+
+- El vector `co2` contiene medidas de $CO_2$ en la atmósfera, en unidades de *ppm*, durante el periodo 1959-1997. El vector `year` contiene sus años correspondientes.
+- Calcular un vector de diferencias de $CO_2$ entre años consecutivos, que sería:
+  - $CO_2$ en 1960 menos $CO_2$  en 1959
+  - $CO_2$ en 1961 menos $CO_2$  en 1960
+  - y así sucesivamente...
+- Crear un **plot** con lineas y puntos mostrando las diferencias consecutivas de $CO_2$ en función del tiempo (1960, 1961, etc...), en **negrita**
+- La diferencia de concentración de $CO_2$ entre 2020 y 2019 fue igual a 2.64. Agregar un punto rojo representando esa diferencia al plot ya creado (usar una forma diferente, como `pch=4`)
+```{r}
+data(co2)
+means = aggregate(co2, FUN=mean)
+year = as.vector(time(means))
+co2 = as.vector(means)
+
+dif <- co2 - dplyr::lag(co2)
+
+dif_2020_2019 <- 2.64
+year_2020 <- 2020
+
+plot(x = year, y = dif, 
+     type = "o", 
+     xlab = "AÃ±o", 
+     ylab = "CO2 aumento por aÃ±o",
+     xlim = c(1960, 2020),
+     ylim = c(0.2, 2.7))
+points(x = year_2020, y = dif_2020_2019, pch = 4, col = "red")
+```
+
+**14. **
+- Lee el archivo `rainfall.csv` como un `data.frame`
+- Calcula e imprime un vector con los nombres de las estaciones donde al menos uno de los meses tiene una precipitación superior a 180mm.
+
+
+## Parte 3
+
+**15. Manipule los dataframe según se solicite**
+
+Se tiene el conjuntos de datos de precipitación diaria (período 1980 - 2013) de ciertas estaciones meteorológicas (**raingaugeDataset.csv**), donde cada una de estas están asociadas a un código único (**p.e. qc00000208**). Asimismo, se tiene una lista con los nombres, códigos, coordenadas y elevación de cada una de las estaciones (**listRaingauge.csv**).
+
+A cada grupo le corresponde la siguiente estación:
+
+- **Grupo 01**: MALLARES
+- **Grupo 02**: TABACONAS
+- **Grupo 03**: PUERTO PIZARRO
+- **Grupo 04**: MORROPON
+- **Grupo 05**: SAN MIGUEL
+- **Grupo 06**: CHULUCANAS
+- **Grupo 07**: LAMBAYEQUE
+- **Grupo 08**: EL LIMON
+- **Grupo 09**: EL SALTO
+- **Grupo 10**: CHUSIS
+
+De lo descrito anteriormente, se solicita:
+
+a) Determine la cantidad de **missing values** de la serie de tiempo a paso diario.
+b) Calcule la serie de tiempo de precipitación **acumulada mensual** (si el # de días con missing values, en un mes, supera el 10%, la precipitación acumulada mensual será considerado como un **`NA`**).
+c) Determine la cantidad de **missing values** de la serie de tiempo a paso mensual.
+d) Cree una función que calcule, a partir de los datos de preicpitación mensual, la **climatología (Ene-Dic)** para el **período 1980-2010**.
+e) Poltear (boxplot) la variabilidad de los valores mensuales (Ene-Dic) para el período 1980-2013.
+```{r}
+A <- rbind(c(2, 1, 3), 
+            c(5, -4, 1), 
+            c(1, -1, -4))
+B <- c(7, -19, 4)
+solve(A, B)
+```
