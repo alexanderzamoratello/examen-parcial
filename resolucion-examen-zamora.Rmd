@@ -1,0 +1,202 @@
+---
+title: "resolucion examen practico - zamora"
+author: "zamora tello "
+date: "6/8/2021"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(hydroGOF)
+knitr::opts_chunk$set(echo = TRUE)
+```
+# EXAMEN PARCIAL
+*ALUMNO:ALEXANDER RENATO ZAMORA TELLO*
+
+*CODIGO :17160048*
+
+## Parte 1 - Usar R nativo (no librer´ıas)
+
+**ejercicio 1**
+```{r}
+variable1 <- function(h, x = 81.4){
+  if (h == 1000){
+    var1 = 81.4
+  } else if (h<=3000 & h> 1000){
+    var1 = x - 2*((h-1000)%/%500)
+  } else if (h > 3000 & h<=4000){
+    var1 = x - 8 - 0.5*((h-3000)%/%500)
+  } else if (h > 4000){
+    var1 = x - 9
+  } else {
+    print("no hay respuesta!")
+  }
+  return(var1)
+}
+
+variable1(1000)
+```
+
+**ejercicio 2**
+
+```{r}
+
+A <- rbind(c(2, 1, 3), 
+           c(5, -4, 1), 
+           c(1, -1, -4))
+B <- c(7, -19, 4)
+solve(A, B)
+```
+
+## Parte 2 
+
+**2A**
+```{r}
+data1 <- as_tibble(read.csv("mods_clima_uh.csv"))
+(data2 <- data1 %>%
+  dplyr::filter(uh_name =="Cuenca Ushusuma", bh_esc == "Observado" )%>%
+  group_by(uh_name) %>%
+  summarise(bh_pc = sum(bh_pc, na.rm = T)))
+```
+
+**2B**
+
+```{r}
+(data3 <- data1 %>% 
+  dplyr::select(uh_name,bh_month,bh_pc,bh_esc)%>% 
+  dplyr::filter(uh_name == "Cuenca Ushusuma") %>% 
+  pivot_wider(names_from = "bh_esc", values_from = "bh_pc"))
+(OB_ACCES <-pbias(data3$`ACCESS 1.0`, data3$Observado, na.rm = T))
+(OB_HadGE <-pbias(data3$`HadGEM2-ES` , data3$Observado , na.rm = T))
+(OB_MPIEM <-pbias(data3$`MPI-ESM-LR` , data3$Observado , na.rm = T))
+```
+
+**2C**
+
+**el escenario mas preciso es el de "MPI-ESM-LR" ya que tiene un valor de -7.6 de sesgo si es sesgo es mas cercano a 0 es mas preciso**
+
+
+**2D**
+```{r}
+(data4 <- data1 %>% 
+  group_by(bh_month, bh_esc) %>% 
+  ggplot(mapping = aes(x = bh_esc, y = bh_pc, fill = bh_esc))+
+  geom_boxplot()+
+  labs (title = "Precipitación de Enero a Diciembre",
+       x = "Escenarios",
+       y = "Precipitación"
+  ))
+```
+
+## Parte 3 
+
+**Pregunta1**
+
+```{r}
+df_t1 <- as_tibble(read.csv("temperatureDataset.csv"))
+(df_t2 <- df_t1 %>% 
+  dplyr::mutate(DATE = as.Date(DATE, format = "%d/%m/%Y")) %>% 
+  dplyr::select(DATE, qc00000805) %>%
+  rename(tt = qc00000805) %>% 
+  dplyr::mutate(tt = ifelse(tt == -99.9, NA, tt)))
+```
+
+**1 A**
+
+```{r}
+(df_t3 <- df_t2 %>% 
+  dplyr::filter(DATE >= "1983-09-01" & DATE < "1984-08-31" | 
+                  DATE >= "1997-09-01" & DATE < "1998-08-31"))
+
+sum(is.na(df_t3$tt))
+```
+
+**1 B**
+
+```{r}
+(df_t4 <- df_t2 %>% 
+  group_by(DATE = str_sub(DATE, 1, 7)) %>% 
+  mutate(MissVal = sum(is.na(tt))*100/n()) %>% 
+  summarise(
+    tt = mean(tt, na.rm = T),
+    MissVal = unique(MissVal)
+  ) %>% 
+  mutate(
+    tt = ifelse(MissVal >= 5, NA, tt),
+    DATE = as.Date(sprintf("%1$s-01", DATE)),
+    month = str_sub(DATE, 6, 7)
+  ))
+
+ggplot(data = df_t4, mapping = aes(x = month, y = tt, fill = month))+
+  geom_boxplot()
+```
+
+**se puede observar dos valores atipicos en el mes de agosto uno menor a 24  y uno mayor a 28 , en el mes de marzo hay un valor atipico menor a 24  y en el mes de noviembre hay un valor atipico superior a 28 esto se puede dar debido  anomalias climaticas  que pasan cada cierto tiempo por diferentes causas como por ejemplo el fenomeno del niño**
+
+**1 C**
+
+```{r}
+(df_t5 <- df_t2 %>% 
+    group_by(DATE = str_sub(DATE, 1, 7)) %>% 
+    mutate(MissVal = sum(is.na(tt))) %>% 
+    summarise(
+      tt = mean(tt, na.rm = T),
+      MissVal = unique(MissVal)
+    ) %>% 
+    dplyr::filter(DATE >= "2005-01-01" & DATE < "2005-12-31" |
+                    DATE >= "2010-01-01" & DATE < "2010-12-31") %>% 
+    mutate(
+      DATE = as.Date(sprintf("%1$s-01", DATE)),
+      month = str_sub(DATE, 6, 7)
+    ))
+```
+
+**1 D**
+
+```{r}
+funcion2 <- function(data_temp){
+  dplyr::filter(data_temp, DATE >= "1980-01-01" & DATE < "1995-12-31" | 
+                  DATE >= "1996-01-01" & DATE < "2010-12-31") %>% 
+    group_by(DATE = str_sub(DATE, 1,7)) %>% 
+    summarise(ttmean = mean(tt, na.rm = T)) %>% 
+    return()
+    }
+(df_t6 <- funcion2(df_t2))
+df_t6 %>% 
+  mutate(month = str_sub(DATE, 6, 7)) %>% 
+  ggplot(mapping = aes(x = month, y = ttmean, fill = month))+
+  geom_boxplot()+
+  ggtitle("Variacion mensual de la temperatura")+
+  labs(
+    x = "Meses",
+    y = "Temperatura"
+    )
+```
+
+**podemos observar 3 valores atipicos en el mes de enero que estan entre 26 y 28 C°, en cambio en el mes de tenemos  dos valores atipicos pero uno de ellos es menor de 23 C°y hay un solo valor atipico en los meses de febrero y agosto**
+
+**1 E**
+
+```{r}
+df_t4 %>% 
+  dplyr::filter(DATE >= "1980-01-01" & DATE < "2013-12-31") %>% 
+  ggplot(mapping = aes(x = month, y = tt, fill = month))+
+  geom_boxplot()+
+  labs(
+    x = "Meses",
+    y = "Temperatura"
+  )
+```
+
+**se puede notar en el grafico que la mediana   de las cajas de los meses octubre , noviembre y diciembre son casi iguales con un valor superior a 25 C°. se puede notar un valor atipico en el mes de agosto de una temperatura menor a 23 C°. el mes que tiene mayor cantidad de valores atipicos y la max temperatura es el de enero con una tmax superior 27 C°**
+
+
+
+
+
+
+
+
+
+
